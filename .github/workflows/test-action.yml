@@ -1,0 +1,39 @@
+name: Test k6-test-action
+on: 
+  push:
+    branches:
+      - "*"
+      - "!main"
+  workflow_dispatch:
+
+jobs:
+  test-action:
+    name: Test helm-upgrade-action
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Kind
+        run: |
+          curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.10.0/kind-linux-amd64
+          chmod +x ./kind
+          sudo mv ./kind /usr/bin/kind
+          kind create cluster
+
+      - name: Pull Down Public Helm
+        id: pull-down-public-helm
+        run: | 
+          helm create testchart
+
+      - name: Run helm-upgrade-action
+        uses: ./
+        id: helm-upgrade-action
+        with:
+          region: "true"
+          aws-account-id: "305628290583"
+          namespace: "default"
+          base-chart: "./testchart"
+          values-file: "./values.yaml"
+          additional-values: "serviceAccount.create=false,awsAccountName=psidev,awsAccountNumber=305628290583,ecrTag=${{ github.sha }}"
+          release-name: "crazy-test"
