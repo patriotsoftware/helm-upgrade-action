@@ -1,0 +1,44 @@
+name: "Helm Upgrade"
+author: DevOps
+description: Helm Upgrade
+
+inputs:
+  region:
+    description: AWS Region
+    required: true
+  aws-account-id:
+    description: AWS Account ID
+    required: true
+  namespace:
+    description: Kubernetes Namespace
+    required: true
+  base-chart:
+    description: Chart to begin with.
+    required: true
+  values-file:
+    description: Location of values file for helm chart.
+    required: true
+  additional-values:
+    description: Comma seperated string that contains extra values set for helm.
+    required: true
+  release-name:
+    description: Name of Release 
+    required: false
+    default: us-east-1
+
+runs:
+  using: "composite"
+  steps:
+    - id: helm-upgrade-action
+      env:
+        INPUT_REGION: ${{ inputs.region }}
+        INPUT_AWS_ACCOUNT_ID: ${{ inputs.aws-account-id }}
+        INPUT_NAMESPACE: ${{ inputs.namespace }}
+        INPUT_BASE_CHART: ${{ inputs.base-chart }}
+        INPUT_VALUES_FILE: ${{ inputs.values-file }}
+        INPUT_ADDITIONAL_VALUES: ${{ inputs.additional }}
+        INPUT_RELEASE_NAME: ${{ inputs.release-name }}
+
+      run: ${{ github.action_path }}/action.sh
+      shell: bash
+

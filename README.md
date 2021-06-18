@@ -1,1 +1,0 @@
-# helm-upgrade-action
