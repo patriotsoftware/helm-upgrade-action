@@ -13,4 +13,4 @@ jobs:
           fetch-depth: 0
 
       - name: Bump Version
-        uses: patriotsoftware/helm-upgrade-action@v1
+        uses: patriotsoftware/semver-bump-action@v1
