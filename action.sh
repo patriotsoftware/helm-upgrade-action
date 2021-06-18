@@ -4,6 +4,7 @@ set -eo pipefail
 
 
 export HELM_EXPERIMENTAL_OCI=1
+echo "This is the Base Chart ${INPUT_BASE_CHART} !!!"
 helm template "${INPUT_RELEASE_NAME}" "${INPUT_BASE_CHART}" -f "${INPUT_VALUES_FILE}" -n "${INPUT_NAMESPACE}" | grep "app.kubernetes.io/name"
 #helm template "${INPUT_RELEASE_NAME}" "${INPUT_BASE_CHART}" -f "${INPUT_VALUES_FILE}" --set "${INPUT_ADDITIONAL_VALUES}" -n "${INPUT_NAMESPACE}"
 echo "Deploying using values file for: ${INPUT_RELEASE_NAME}"
