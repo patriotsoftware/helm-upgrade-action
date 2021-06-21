@@ -47,7 +47,7 @@ jobs:
         run: | 
           chartname="${{ env.release-name }}-${{ env.base-chart-name }}"
           echo $chartname
-          status=$(kubectl get pods metadata.name==$chartname -o jsonpath="{.items[*]['status.phase']}")
+          status=$(kubectl get pods metadata.name==$chartname* -o jsonpath="{.items[*]['status.phase']}")
 
           if [[ "$status"  == "Running" ]]; then
               echo "✅ Helm uploaded correctly, test pod is running."
