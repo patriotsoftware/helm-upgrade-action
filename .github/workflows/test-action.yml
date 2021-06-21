@@ -45,7 +45,7 @@ jobs:
           namespace: default
           base-chart: testchart # Remove file locator
         run: | 
-          kubectl get pods -n default
+          kubectl get pod -l app=$chartname -n default
           chartname="${{ env.release-name }}-${{ env.base-chart }}"
           echo $chartname
           status=$(kubectl get pod -l app=$chartname -n ${{ env.namespace }} -o jsonpath="{.items[*]['status.phase']}")
