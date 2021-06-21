@@ -44,10 +44,12 @@ jobs:
           release-name: crazy-test
           namespace: default
         run: | 
-          if [ kubectl describe pods $(kubectl get deploy -n env.namespace) -n ${{ env.namespace }} | grep "Status" == "running" ]; then
-            echo "✅ Helm uploaded correctly, test pod is running."
-            exit 0
+          var=$(kubectl describe pods $(kubectl get deploy -n env.namespace) -n ${{ env.namespace }}  | grep "Status")
+
+          if [[ "$var"  == *"Running"* ]]; then
+              echo "✅ Helm uploaded correctly, test pod is running."
+              exit 0
           else
-            echo "❌ Helm upload failed, test pod is not running."
-            exit 1
+              echo "❌ Helm upload failed, test pod is not running."
+              exit 1
           fi
