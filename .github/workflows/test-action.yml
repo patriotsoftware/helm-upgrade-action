@@ -45,10 +45,10 @@ jobs:
           namespace: default
           base-chart: testchart # Remove file locator
         run: | 
-          kubectl get pod --field-selector metadata.name -n default
+          kubectl get pods --sort-by=.metadata.name 
           chartname="${{ env.release-name }}-${{ env.base-chart }}"
           echo $chartname
-          status=$(kubectl get pod -l app=$chartname -n ${{ env.namespace }} -o jsonpath="{.items[*]['status.phase']}")
+          status=$(kubectl get pods --sort-by=.metadata.name -o jsonpath="{.items[*]['status.phase']}")
            if [[ "$status"  == "Running" ]]; then
               echo "✅ Helm uploaded correctly, test pod is running."
               exit 0
