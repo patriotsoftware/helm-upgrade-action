@@ -43,9 +43,10 @@ jobs:
         env:
           release-name: crazy-test
           namespace: default
+          base-chart: ./testchart
         run: | 
-          kubectl get all --all-namespaces
-          status=$(kubectl get pod -l app=${{ env.release-name }} -n ${{ env.namespace }} -o jsonpath="{.items[*]['status.phase']}")
+          chartname = "${{ env.release-name }}-${base-chart//[^[:alnum:]]/}""
+          status=$(kubectl get pod -l app=$chartname -n ${{ env.namespace }} -o jsonpath="{.items[*]['status.phase']}")
            if [[ "$status"  == "Running" ]]; then
               echo "✅ Helm uploaded correctly, test pod is running."
               exit 0
