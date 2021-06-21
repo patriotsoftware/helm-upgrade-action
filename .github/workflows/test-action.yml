@@ -46,8 +46,8 @@ jobs:
           base-chart: ./testchart
         run: | 
           base-chart=${{ env.base-chart }}
-          echo $base-chart
-          chartname="${{ env.release-name }}-${base-chart//.}"
+          base-chart=${base-chart//.}
+          chartname="${{ env.release-name }}-$base-chart"
           echo $chartname
           status=$(kubectl get pod -l app=$chartname -n ${{ env.namespace }} -o jsonpath="{.items[*]['status.phase']}")
            if [[ "$status"  == "Running" ]]; then
