@@ -44,5 +44,4 @@ jobs:
           release-name: crazy-test
           namespace: default
         run: | 
-          kubectl get deploy
-         # kubectl describe pods $(kubectl get pods -n env.namespace) -n ${{ env.namespace }} | grep "Status"
+          kubectl describe pods $(kubectl get deploy -n env.namespace) -n ${{ env.namespace }} | grep "Status"
