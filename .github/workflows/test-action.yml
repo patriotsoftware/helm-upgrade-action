@@ -44,7 +44,7 @@ jobs:
           release-name: crazy-test
           namespace: default
         run: | 
-          var=$(kubectl describe pods $(kubectl get deploy -n env.namespace) -n ${{ env.namespace }}  | grep "Status")
+          var=$(kubectl describe pods $(kubectl get deploy -n ${{ env.namespace }} ) -n ${{ env.namespace }}  | grep "Status")
 
           if [[ "$var"  == *"Running"* ]]; then
               echo "✅ Helm uploaded correctly, test pod is running."
