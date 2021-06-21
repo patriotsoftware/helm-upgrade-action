@@ -43,11 +43,9 @@ jobs:
         env:
           release-name: crazy-test
           namespace: default
-          base-chart: ./testchart
+          base-chart: testchart # Remove file locator
         run: | 
-          base-chart=${{ env.base-chart }}
-          base-chart=${base-chart//.}
-          chartname="${{ env.release-name }}-$base-chart"
+          chartname="${{ env.release-name }}-${{ env.base-chart }}"
           echo $chartname
           status=$(kubectl get pod -l app=$chartname -n ${{ env.namespace }} -o jsonpath="{.items[*]['status.phase']}")
            if [[ "$status"  == "Running" ]]; then
