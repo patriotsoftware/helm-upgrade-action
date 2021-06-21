@@ -45,8 +45,8 @@ jobs:
           namespace: default
           base-chart: ./testchart
         run: | 
-          echo ${env.base-chart//.}
-          chartname = "${{ env.release-name }}-${env.base-chart//.}"
+          base-chart = ${{ env.base-chart }}
+          chartname = "${{ env.release-name }}-${base-chart//.}"
           status=$(kubectl get pod -l app=$chartname -n ${{ env.namespace }} -o jsonpath="{.items[*]['status.phase']}")
            if [[ "$status"  == "Running" ]]; then
               echo "✅ Helm uploaded correctly, test pod is running."
