@@ -44,7 +44,8 @@ jobs:
           release-name: crazy-test
           namespace: default
         run: | 
-          status=$(kubectl get pod -l app=${{ env.release-name }} -n ${{ env.namespace }} -o jsonpath="{.items[0]['status.phase']}")
+          kubectl get pod -l app=${{ env.release-name }} -n ${{ env.namespace }}
+          status=$(kubectl get pod -l app=${{ env.release-name }} -n ${{ env.namespace }} -o jsonpath="{.items[*]['status.phase']}")
            if [[ "$status"  == "Running" ]]; then
               echo "✅ Helm uploaded correctly, test pod is running."
               exit 0
