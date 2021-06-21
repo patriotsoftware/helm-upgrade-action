@@ -43,13 +43,12 @@ jobs:
         env:
           release-name: crazy-test
           namespace: default
-          base-chart: testchart # Remove file locator
+          base-chart-name: testchart # Remove appended ./
         run: | 
-          kubectl get pods --sort-by=.metadata.name 
-          chartname="${{ env.release-name }}-${{ env.base-chart }}"
-          echo $chartname
+          chartname="${{ env.release-name }}-${{ env.base-chart-name }}"
           status=$(kubectl get pods --sort-by=.metadata.name -o jsonpath="{.items[*]['status.phase']}")
-           if [[ "$status"  == "Running" ]]; then
+
+          if [[ "$status"  == "Running" ]]; then
               echo "✅ Helm uploaded correctly, test pod is running."
               exit 0
           else
