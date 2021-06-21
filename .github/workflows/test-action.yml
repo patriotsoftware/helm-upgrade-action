@@ -40,7 +40,6 @@ jobs:
 
       - name: Test for Successful Helm Upgrade/Install
         id: helm-upgrade-test
-        uses: ./
         with:
           release-name: crazy-test
           namespace: default
