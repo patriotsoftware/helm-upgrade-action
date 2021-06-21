@@ -31,9 +31,17 @@ jobs:
         id: helm-upgrade-action
         with:
           region: true
-          aws-account-id: 305628290583
+          aws-account-id: 123456123456
           namespace: default
           base-chart: ./testchart
           values-file: ./values.yaml
-          additional-values: "serviceAccount.create=false,awsAccountName=psidev,awsAccountNumber=305628290583,ecrTag=${{ github.sha }}"
+          additional-values: "serviceAccount.create=false,awsAccountName=development,awsAccountNumber=123456123456,ecrTag=${{ github.sha }}"
           release-name: crazy-test
+
+      - name: Test for Successful Helm Upgrade/Install
+        id: helm-upgrade-test
+        with:
+          release-name: crazy-test
+          namespace: default
+        run: | 
+          kubectl get pods -n ${{namespace}} | grep "release-name"
