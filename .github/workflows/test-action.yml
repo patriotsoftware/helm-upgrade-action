@@ -31,9 +31,30 @@ jobs:
         id: helm-upgrade-action
         with:
           region: true
-          aws-account-id: 305628290583
+          aws-account-id: 123456123456
           namespace: default
           base-chart: ./testchart
           values-file: ./values.yaml
-          additional-values: "serviceAccount.create=false,awsAccountName=psidev,awsAccountNumber=305628290583,ecrTag=${{ github.sha }}"
+          additional-values: "serviceAccount.create=false,awsAccountName=development,awsAccountNumber=123456123456,ecrTag=${{ github.sha }}"
           release-name: crazy-test
+
+      - name: Test for Successful Helm Upgrade/Install
+        id: helm-upgrade-test
+        env:
+          release-name: crazy-test
+          namespace: default
+          base-chart-name: testchart # Remove appended ./
+        run: | 
+          chartname="${{ env.release-name }}-${{ env.base-chart-name }}"
+          podname=$(kubectl get pods -o jsonpath="{.items[*]['metadata.name']}")
+          
+          if [[ "$podname"  != "$chartname"* ]]; then
+              echo "❌ Pod name is unexpected. Install Failed."
+              exit 1
+          elif [[ $(kubectl get pods $podname -o jsonpath="{['status.phase']}") == "Running" ]]; then
+              echo "✅ Helm uploaded correctly, test pod is running."
+              exit 0
+          else
+              echo "❌ Helm upload failed, test pod is not running."
+              exit 1
+          fi
