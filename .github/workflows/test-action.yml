@@ -46,12 +46,12 @@ jobs:
           base-chart-name: testchart # Remove appended ./
         run: | 
           chartname="${{ env.release-name }}-${{ env.base-chart-name }}"
-          pod-name=$( kubectl get pods -o jsonpath="{.items[*]['metadata.name']}" )
+          podname=$(kubectl get pods -o jsonpath="{.items[*]['metadata.name']}")
           
-          if [[ "$pod-name"  != "$chartname"* ]]; then
+          if [[ "$podname"  != "$chartname"* ]]; then
               echo "Pod name is unexpected. Install Failed."
               exit 1
-          elif [[kubectl get pods $pod-name -o jsonpath="{.items[0]['status.phase']}" == "Running"]]; then
+          elif [[kubectl get pods $podname -o jsonpath="{.items[0]['status.phase']}" == "Running"]]; then
               echo "✅ Helm uploaded correctly, test pod is running."
               exit 0
           else
