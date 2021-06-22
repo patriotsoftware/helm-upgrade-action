@@ -49,7 +49,7 @@ jobs:
           podname=$(kubectl get pods -o jsonpath="{.items[*]['metadata.name']}")
           
           if [[ "$podname"  != "$chartname"* ]]; then
-              echo "Pod name is unexpected. Install Failed."
+              echo "❌ Pod name is unexpected. Install Failed."
               exit 1
           elif [[ $(kubectl get pods $podname -o jsonpath="{['status.phase']}") == "Running" ]]; then
               echo "✅ Helm uploaded correctly, test pod is running."
