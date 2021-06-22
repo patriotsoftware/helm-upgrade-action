@@ -46,7 +46,7 @@ jobs:
           base-chart-name: testchart # Remove appended ./
         run: | 
           chartname="${{ env.release-name }}-${{ env.base-chart-name }}"
-          pod-name="$(kubectl get pods -o jsonpath="{.items[*]['metadata.name']}")"
+          pod-name= $(kubectl get pods -o jsonpath="{.items[*]['metadata.name']}")
           
           if [[ "$pod-name"  != "$chartname"* ]]; then
               echo "Pod name is unexpected. Install Failed."
