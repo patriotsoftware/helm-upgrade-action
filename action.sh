@@ -8,7 +8,8 @@ export HELM_EXPERIMENTAL_OCI=1
 
 INPUT_VALUES_FILE="-f "${INPUT_VALUES_FILE}
 echo ${INPUT_VALUES_FILE}
-suffix=" -f ";  echo ${INPUT_VALUES_FILE} | sed -E "s/([^,]+)/\1${suffix}/g"
+#suffix=" -f ";  echo ${INPUT_VALUES_FILE} | sed -E "s/([^,]+)/\1${suffix}/g"
+echo ${INPUT_VALUES_FILE} | sed -r 's/[,]+/ -f /g'
 echo ${INPUT_VALUES_FILE}
 
 #echo ${INPUT_VALUES_FILE} | sed 's/,//g'
