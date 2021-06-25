@@ -14,7 +14,7 @@ echo ${INPUT_VALUES_FILE}
 
 
 echo ${INPUT_VALUES_FILE}
-helm template "${INPUT_RELEASE_NAME}" "${INPUT_BASE_CHART}" "${INPUT_VALUES_FILE}" --set "${INPUT_ADDITIONAL_VALUES}" -n "${INPUT_NAMESPACE}"
+helm template "${INPUT_RELEASE_NAME}" "${INPUT_BASE_CHART}"  -f ./values.yaml -f ./values-2.yaml --set "${INPUT_ADDITIONAL_VALUES}" -n "${INPUT_NAMESPACE}"
 echo "Deploying using values file for: ${INPUT_RELEASE_NAME}"
 echo "Best steps to investigate if step fails:"
 echo "- Run your branch in a container locally"
