@@ -8,11 +8,11 @@ export HELM_EXPERIMENTAL_OCI=1
 
 sed -i -e 's/^/-f /' ${INPUT_VALUES_FILE}
 echo ${INPUT_VALUES_FILE}
-suffix=" -f ";  echo ${INPUT_VALUES_FILE} | sed -E "s/([^,]+)/\1${suffix}/g"
-echo ${INPUT_VALUES_FILE}
+#suffix=" -f ";  echo ${INPUT_VALUES_FILE} | sed -E "s/([^,]+)/\1${suffix}/g"
+#echo ${INPUT_VALUES_FILE}
 
-echo ${INPUT_VALUES_FILE} | sed 's/,//g'
-echo ${INPUT_VALUES_FILE}
+#echo ${INPUT_VALUES_FILE} | sed 's/,//g'
+#echo ${INPUT_VALUES_FILE}
 helm template "${values-string}" --set "${INPUT_ADDITIONAL_VALUES}" -n "${INPUT_NAMESPACE}" "${INPUT_RELEASE_NAME}" "${INPUT_BASE_CHART}"
 
 #helm template "${INPUT_RELEASE_NAME}" "${INPUT_BASE_CHART}" -f "${INPUT_VALUES_FILE}" --set "${INPUT_ADDITIONAL_VALUES}" -n "${INPUT_NAMESPACE}"
