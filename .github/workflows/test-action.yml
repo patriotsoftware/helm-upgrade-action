@@ -34,7 +34,7 @@ jobs:
           aws-account-id: 123456123456
           namespace: default
           base-chart: ./testchart
-          values-file: ./values.yaml
+          values-file: "./values.yaml"
           additional-values: "serviceAccount.create=false,awsAccountName=development,awsAccountNumber=123456123456,ecrTag=${{ github.sha }}"
           release-name: crazy-test
 
