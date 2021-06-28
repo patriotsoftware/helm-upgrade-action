@@ -37,6 +37,7 @@ runs:
         INPUT_BASE_CHART: ${{ inputs.base-chart }}
         INPUT_VALUES_FILE: ${{ inputs.values-file }}
         INPUT_ADDITIONAL_VALUES: ${{inputs.additional-values }}
+        INPUT_BACKUP_MECHANISMS: ${{inputs.backup-mechanisms }}
         INPUT_RELEASE_NAME: ${{ inputs.release-name }}
 
       run: ${{ github.action_path }}/action.sh
