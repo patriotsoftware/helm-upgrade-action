@@ -36,7 +36,7 @@ runs:
         INPUT_NAMESPACE: ${{ inputs.namespace }}
         INPUT_BASE_CHART: ${{ inputs.base-chart }}
         INPUT_VALUES_FILE: ${{ inputs.values-file }}
-        INPUT_ADDITIONAL_VALUES: ${{ inputs.additional }}
+        INPUT_ADDITIONAL_VALUES: ${{inputs.additional-values }}
         INPUT_RELEASE_NAME: ${{ inputs.release-name }}
 
       run: ${{ github.action_path }}/action.sh
