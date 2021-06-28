@@ -21,7 +21,7 @@ inputs:
   additional-values:
     description: Comma seperated string that contains extra values set for helm.
     required: true
-  inline-values:
+  additional-args:
     description: handles inline options such as atomic, or timeout.
     required: false
   release-name:
@@ -40,7 +40,7 @@ runs:
         INPUT_BASE_CHART: ${{ inputs.base-chart }}
         INPUT_VALUES_FILE: ${{ inputs.values-file }}
         INPUT_ADDITIONAL_VALUES: ${{inputs.additional-values }}
-        INPUT_INLINE_VALUES: ${{inputs.inline-values }}
+        INPUT_ADDITIONAL_ARGS: ${{inputs.additional-args }}
         INPUT_RELEASE_NAME: ${{ inputs.release-name }}
 
       run: ${{ github.action_path }}/action.sh
