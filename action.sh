@@ -22,5 +22,5 @@ echo "- Run the deployment again, but check the kube-dashboard while it's deploy
 helm_upgrade_cmd="helm upgrade --install ${INPUT_INLINE_VALUES} ${INPUT_VALUES_FILE} --set ${INPUT_ADDITIONAL_VALUES} --atomic --timeout 3m -n ${INPUT_NAMESPACE} ${INPUT_RELEASE_NAME} ${INPUT_BASE_CHART}"
 eval $helm_upgrade_cmd
 
-helm status "${INPUT_RELEASE_NAME}" -n ${INPUT_NAMESPACE}
+helm status "${INPUT_RELEASE_NAME}" -n "${INPUT_NAMESPACE}"
 echo "✅ Helm upgrade complete"
