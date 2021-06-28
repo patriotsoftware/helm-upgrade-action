@@ -35,7 +35,7 @@ jobs:
           namespace: default
           base-chart: ./testchart
           values-file: "./values.yaml,./values-2.yaml"
-          inline-values: "--atomic"
+          inline-values: "--atomic --timeout 1m30s"
           additional-values: "serviceAccount.create=false,awsAccountName=development,awsAccountNumber=123456123456,ecrTag=${{ github.sha }}"
           release-name: crazy-test
 
