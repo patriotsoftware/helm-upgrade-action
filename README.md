@@ -11,7 +11,7 @@ namespace:
   Namespace to install the helm chart to within kubernetes.
 values-file:
   Can accept multiple comma separated values, needs the path included in the file name.
-inline-values:
+additional-args:
   Typically will being with -- (needs included in the values). These will not be prefaced with anything.
 additional-values:
   Values to be prefaced with --set.
