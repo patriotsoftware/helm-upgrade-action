@@ -10,8 +10,8 @@ INPUT_VALUES_FILE="-f "${INPUT_VALUES_FILE}
 INPUT_VALUES_FILE=$(echo ${INPUT_VALUES_FILE} | sed -r 's/[,]+/ -f /g')
 echo ${INPUT_VALUES_FILE}
 
-helm-template-cmd="helm template ${INPUT_RELEASE_NAME} ${INPUT_BASE_CHART} ${INPUT_VALUES_FILE} --set ${INPUT_ADDITIONAL_VALUES} -n ${INPUT_NAMESPACE}"
-echo $helm-template-cmd
+helm_template_cmd="helm template ${INPUT_RELEASE_NAME} ${INPUT_BASE_CHART} ${INPUT_VALUES_FILE} --set ${INPUT_ADDITIONAL_VALUES} -n ${INPUT_NAMESPACE}"
+echo $helm_template_cmd
 #eval $helm-template-cmd
 #helm template "${INPUT_RELEASE_NAME}" "${INPUT_BASE_CHART}" "${INPUT_VALUES_FILE}" --set "${INPUT_ADDITIONAL_VALUES}" -n "${INPUT_NAMESPACE}"
 
