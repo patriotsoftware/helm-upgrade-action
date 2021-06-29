@@ -1,4 +1,4 @@
-name: Test k6-test-action
+name: Test helm-upload-test-action
 on: 
   push:
     branches:
