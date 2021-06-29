@@ -30,8 +30,6 @@ jobs:
         uses: ./
         id: helm-upgrade-action
         with:
-          region: true
-          aws-account-id: 123456123456
           namespace: default
           base-chart: ./testchart
           values-file: "./values.yaml,./values-2.yaml"
