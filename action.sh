@@ -21,6 +21,7 @@ echo "- Run your branch in a container locally"
 echo "- Run the deployment again, but check the kube-dashboard while it's deploying -- especially the replicaset for errors, and the pod logs for errors"
 
 helm_upgrade_cmd="helm upgrade --install ${INPUT_RELEASE_NAME} ${INPUT_BASE_CHART} ${INPUT_ADDITIONAL_ARGS} ${INPUT_VALUES_FILE} --set ${INPUT_ADDITIONAL_VALUES} -n ${INPUT_NAMESPACE}"
+echo $helm_upgrade_cmd
 eval $helm_upgrade_cmd
 
 helm status "${INPUT_RELEASE_NAME}" -n "${INPUT_NAMESPACE}"
