@@ -8,13 +8,10 @@ show_problems() {
     echo -e "\n \n"
 
     export revision=$(kubectl get deploy -n ${INPUT_NAMESPACE} ${INPUT_RELEASE_NAME} -o jsonpath="{.metadata.annotations.deployment\.kubernetes\.io\/revision}")
-    RS_NAME=`kubectl describe deployment $DEPLOY_NAME|grep "^NewReplicaSet"|awk '{print $2}'`; echo $RS_NAME
+    RS_NAME=`kubectl describe deployment -n ${INPUT_NAMESPACE} $DEPLOY_NAME|grep "^NewReplicaSet"|awk '{print $2}'`; echo $RS_NAME
     kubectl describe rs -n ${INPUT_NAMESPACE} $RS_NAME
-
     POD_HASH_LABEL=`kubectl get rs $RS_NAME -o jsonpath="{.metadata.labels.pod-template-hash}"` ; echo $POD_HASH_LABEL
-
     POD_NAMES=`kubectl get pods -l pod-template-hash=$POD_HASH_LABEL --show-labels | tail -n +2 | awk '{print $1}'`; echo $POD_NAMES
-
     kubectl describe deploy -n ${INPUT_NAMESPACE} ${INPUT_RELEASE_NAME}
     echo $POD_NAMES | xargs kubectl describe pod -n ${INPUT_NAMESPACE}
     kubectl logs -n ${INPUT_NAMESPACE} deploy/${INPUT_RELEASE_NAME}
