@@ -16,10 +16,12 @@ show_problems() {
     POD_HASH_LABEL=$(kubectl get rs $RS_NAME -o jsonpath="{.metadata.labels.pod-template-hash}")
     POD_NAMES=$(kubectl get pods -l pod-template-hash=$POD_HASH_LABEL --show-labels | tail -n +2 | awk '{print $1}')
     
-    echo -e "\n Pod Description: \n"
-    echo $POD_NAMES | xargs kubectl describe pod -n ${INPUT_NAMESPACE}
     echo -e "\n Pod Logs: \n"
     kubectl logs -n ${INPUT_NAMESPACE} deploy/${INPUT_RELEASE_NAME}
+    
+    echo -e "\n Pod Description: \n"
+    echo $POD_NAMES | xargs kubectl describe pod -n ${INPUT_NAMESPACE} {}
+    
 }
 export HELM_EXPERIMENTAL_OCI=1
 
