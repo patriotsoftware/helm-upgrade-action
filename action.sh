@@ -7,6 +7,8 @@ show_problems() {
     helm status -n ${INPUT_NAMESPACE} ${INPUT_RELEASE_NAME}
     echo -e "\n \n"
     kubectl describe deploy -n ${INPUT_NAMESPACE} ${INPUT_RELEASE_NAME}
+    kubectl describe rs -n ${INPUT_NAMESPACE} app.kubernetes.io/instance=${INPUT_RELEASE_NAME}
+    kubectl describe pods -n ${INPUT_NAMESPACE} app.kubernetes.io/instance=${INPUT_RELEASE_NAME}
     kubectl logs -n ${INPUT_NAMESPACE} deploy/${INPUT_RELEASE_NAME}
 }
 export HELM_EXPERIMENTAL_OCI=1
