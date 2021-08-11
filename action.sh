@@ -3,7 +3,7 @@
 set -eo pipefail
 
 show_problems() {
-    sleep 10s
+    sleep ${INPUT_PROBLEMS_TIMEOUT}
     helm status -n ${INPUT_NAMESPACE} ${INPUT_RELEASE_NAME}
     echo -e "\n \n"
     kubectl describe deploy -n ${INPUT_NAMESPACE} ${INPUT_RELEASE_NAME}

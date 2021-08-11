@@ -28,6 +28,9 @@ inputs:
     description: Name of Release 
     required: false
     default: us-east-1
+  problems-timeout:
+    description: Number of seconds to wait before checking potential issues (as an integer of seconds)
+    required: false
 
 runs:
   using: "composite"
@@ -42,6 +45,7 @@ runs:
         INPUT_ADDITIONAL_VALUES: ${{inputs.additional-values }}
         INPUT_ADDITIONAL_ARGS: ${{inputs.additional-args }}
         INPUT_RELEASE_NAME: ${{ inputs.release-name }}
+        INPUT_PROBLEMS_TIMEOUT: ${{ inputs.problems-timeout }}
       run: ${{ github.action_path }}/action.sh
       shell: bash
 
