@@ -8,22 +8,22 @@ show_problems() {
     echo -e "\n \n"
     
     echo -e "\nDeployment Description: \n"
-    deploy_description=$(kubectl describe deploy -n ${INPUT_NAMESPACE} ${INPUT_RELEASE_NAME})
+    deploy_description="$(kubectl describe deploy -n ${INPUT_NAMESPACE} ${INPUT_RELEASE_NAME})"
     echo $deploy_description
     
     echo -e "\nReplicaSet Description: \n"
     replicaset_name=$(kubectl describe deployment -n ${INPUT_NAMESPACE} ${INPUT_RELEASE_NAME} | grep "^NewReplicaSet"| awk '{print $2}')
-    replicaset_description=$(kubectl describe rs -n ${INPUT_NAMESPACE} $replicaset_name)
+    replicaset_description="$(kubectl describe rs -n ${INPUT_NAMESPACE} $replicaset_name)"
     echo $replicaset_description
     
     echo -e "\nPod Description: \n"
     pod_hash_label=$(kubectl get rs -n ${INPUT_NAMESPACE} $replicaset_name -o jsonpath="{.metadata.labels.pod-template-hash}")
     pod_names=$(kubectl get pods -n ${INPUT_NAMESPACE} -l pod-template-hash=$pod_hash_label --show-labels | tail -n +2 | awk '{print $1}')
-    pod_descriptions=$(echo $pod_names | xargs kubectl describe pod -n ${INPUT_NAMESPACE})
+    pod_descriptions="$(echo $pod_names | xargs kubectl describe pod -n ${INPUT_NAMESPACE})"
     echo pod_descriptions
 
     echo -e "\nPod Logs: \n"
-    pod_logs=$(echo $pod_names | xargs kubectl logs -n ${INPUT_NAMESPACE})
+    pod_logs="$(echo $pod_names | xargs kubectl logs -n ${INPUT_NAMESPACE})"
     echo pod_logs
 
     # TODO: Add Green check, red X, save outputs to variables to do quick check after printing. Check for: Startup error, Image error, No node available
@@ -47,7 +47,6 @@ show_problems() {
     if [[ "$full_logs" == *"ImagePullBackOff"* ]]; then
         echo "ImagePullBackOff found. This occurs when the container image cannot be pulled. Check that the image exists and that the node has access to that image."
     fi
-    
     
     if [[ "$full_logs" == *"FailedScheduling"* ]]; then
         echo "FailedScheduling found. Check the 'Events' section of the pod description above."
