@@ -20,7 +20,7 @@ release-name:
 problems-timeout:
   Number of seconds to wait before running problem detection. Use this along with the --atmoic flag, and set to 30 seconds less than your timeout.
 print-template:
-  Allowed values: true/false. Determines whether or not to run 'helm template' with the specified values. Defaults to true.
+  Allowed values: true/false. Determines whether or not to run 'helm template' with the specified values. Defaults to true. Assumes a single deployment with the same name as your helm release.
 ```
 
 # Testing the action locally

@@ -26,39 +26,41 @@ show_problems() {
     pod_logs="$(echo $pod_names | xargs kubectl logs -n ${INPUT_NAMESPACE})"
     echo "$pod_logs"
 
-    echo -e "\n\nThere are a variety of reasons a deployment could fail. Search the GitHub Action logs for the following headers to jump to a specific part:"
-    echo " Deployment Description"
-    echo " ReplicaSet Description"
-    echo " Pod Description"
-    echo " Pod Logs"
 
-    echo -e "\n\nℹ️ Searching common causes for failures. Findings will be shown below. If none are shown, take a look through each of the previous sections."
+    echo -e "\n\nℹ️ Problems timeout seconds exceeded. Beginning analysis. \n\n"
+    echo -e "ℹ️ There are a variety of reasons a deployment could fail. Search the GitHub Action logs for the following headers to jump to a specific section:"
+    echo "    Deployment Description"
+    echo "    ReplicaSet Description"
+    echo "    Pod Description"
+    echo "    Pod Logs"
+
+    echo -e "\n\n⏳ Searching common causes for failures. Findings will be shown below. If none are shown, take a look through each of the previous sections."
 
     full_logs=$(echo -e "$deploy_description $replicaset_description $pod_descriptions $pod_logs")
     
     if [[ "$full_logs" == *"CrashLoopBackOff"* ]]; then
-        echo -e "❌ CrashLoopBackoff found.\n This occurs when either a pod crashes during startup, or a health check probe continually fails. Check pod logs above.\n\n"
+        echo -e "❌ CrashLoopBackoff found.\n This occurs when either a pod crashes during startup, or a health check probe continually fails. Check pod logs above.\n"
     fi
 
     if [[ "$full_logs" == *"probe errored"* ]] || [[ "$full_logs" == *"probe failed"* ]]; then
-        echo -e "❌ One or more probes (startup, liveness, readiness) has failed. Check the pod description above.\n\n"
+        echo -e "❌ One or more probes (startup, liveness, readiness) has failed. Check the pod description above.\n"
     fi
 
     if [[ "$full_logs" == *"ImagePullBackOff"* ]]; then
-        echo -e "❌ ImagePullBackOff found.\n This occurs when the container image cannot be pulled. Check that the image exists and that the node has access to that image.\n\n"
+        echo -e "❌ ImagePullBackOff found.\n This occurs when the container image cannot be pulled. Check that the image exists and that the node has access to that image.\n"
     fi
     
     if [[ "$full_logs" == *"FailedScheduling"* ]]; then
-        echo -e "❌ FailedScheduling found.\n Check the 'Events' section of the pod description above.\n\n"
+        echo -e "❌ FailedScheduling found.\n Check the 'Events' section of the pod description above.\n"
     fi
 
     if [[ "$full_logs" == *"FailedCreate"* ]]; then
-        echo -e "❌ FailedCreate found.\n Check the 'Events' section of the pod description above.\n\n"
+        echo -e "❌ FailedCreate found.\n Check the 'Events' section of the pod description above.\n"
     fi
 
     shopt -s nocasematch
     if [[ "$pod_logs" =~ "error" ]]; then
-        echo -e "❌ Error found in pod logs. Check the pod logs above.\n\n"
+        echo -e "❌ Error found in pod logs. Check the pod logs above.\n"
     fi
     
 }
