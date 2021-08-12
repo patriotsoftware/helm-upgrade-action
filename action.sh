@@ -22,7 +22,6 @@ show_problems() {
     echo "::endgroup::"
     echo ""
 
-   
     echo -e "::group::Pod Description:"
     pod_hash_label=$(kubectl get rs -n ${INPUT_NAMESPACE} $replicaset_name -o jsonpath="{.metadata.labels.pod-template-hash}")
     pod_names=$(kubectl get pods -n ${INPUT_NAMESPACE} -l pod-template-hash=$pod_hash_label --show-labels | tail -n +2 | awk '{print $1}')
