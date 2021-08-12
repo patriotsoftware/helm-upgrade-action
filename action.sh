@@ -77,7 +77,7 @@ fi
 
 helm_upgrade_cmd="helm upgrade --install ${INPUT_RELEASE_NAME} ${INPUT_BASE_CHART} ${INPUT_ADDITIONAL_ARGS} ${INPUT_VALUES_FILE} --set ${INPUT_ADDITIONAL_VALUES} -n ${INPUT_NAMESPACE}"
 echo $helm_upgrade_cmd
-if [[ -n ${INPUT_PROBLEMS_TIMEOUT}]]; then 
+if [[ -n ${INPUT_PROBLEMS_TIMEOUT} ]]; then 
     show_problems &
     eval $helm_upgrade_cmd
 
@@ -86,5 +86,6 @@ if [[ -n ${INPUT_PROBLEMS_TIMEOUT}]]; then
 else
     eval $helm_upgrade_cmd
 fi
+
 helm status "${INPUT_RELEASE_NAME}" -n "${INPUT_NAMESPACE}"
 echo "✅ Helm upgrade complete"
