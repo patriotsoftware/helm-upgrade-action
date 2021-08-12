@@ -39,6 +39,7 @@ show_problems() {
 
     echo -e "⏳ Problems timeout seconds exceeded. Beginning analysis.\n"
     echo -e "ℹ️ There are a variety of reasons a deployment could fail. The following sections can be expanded above for deeper inspection:"
+    echo "    Helm Status"    
     echo "    Deployment Description"
     echo "    ReplicaSet Description"
     echo "    Pod Description"
