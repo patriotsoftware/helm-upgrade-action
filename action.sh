@@ -37,7 +37,6 @@ show_problems() {
     echo "::endgroup::"
     echo ""
 
-    echo -e "::group::Problem Analysis:"
     echo -e "⏳ Problems timeout seconds exceeded. Beginning analysis.\n"
     echo -e "ℹ️ There are a variety of reasons a deployment could fail. The following sections can be expanded above for deeper inspection:"
     echo "    Deployment Description"
@@ -73,7 +72,6 @@ show_problems() {
     if [[ "$pod_logs" =~ "error" ]]; then
         echo -e "::error ::❌ Error found in pod logs. Check the pod logs.\n"
     fi
-    echo "::endgroup::"
 }
 export HELM_EXPERIMENTAL_OCI=1
 
