@@ -26,36 +26,40 @@ show_problems() {
     pod_logs="$(echo $pod_names | xargs kubectl logs -n ${INPUT_NAMESPACE})"
     echo "$pod_logs"
 
-    # TODO: Add Green check, red X, save outputs to variables to do quick check after printing. Check for: Startup error, Image error, No node available
-    echo "There are a variety of reasons a deployment could fail. Search the GitHub Action logs for the following headers to jump to a specific part:"
+    echo -e "\n\nThere are a variety of reasons a deployment could fail. Search the GitHub Action logs for the following headers to jump to a specific part:"
     echo " Deployment Description"
     echo " ReplicaSet Description"
     echo " Pod Description"
     echo " Pod Logs"
-    echo -e "\n\nSearching common causes. Findings will be shown below. If none are shown, take a look through each of the previous sections."
+
+    echo -e "\n\nℹ️ Searching common causes for failures. Findings will be shown below. If none are shown, take a look through each of the previous sections."
 
     full_logs=$(echo -e "$deploy_description $replicaset_description $pod_descriptions $pod_logs")
     
     if [[ "$full_logs" == *"CrashLoopBackOff"* ]]; then
-        echo -e "❌ CrashLoopBackoff found. This occurs when either a pod crashes during startup, or a health check probe continually fails. Check pod logs above.\n"
+        echo -e "❌ CrashLoopBackoff found.\n This occurs when either a pod crashes during startup, or a health check probe continually fails. Check pod logs above.\n\n"
     fi
 
     if [[ "$full_logs" == *"probe errored"* ]] || [[ "$full_logs" == *"probe failed"* ]]; then
-        echo -e "❌ One or more probes (startup, liveness, readiness) has failed. Check the pod description above.\n"
+        echo -e "❌ One or more probes (startup, liveness, readiness) has failed. Check the pod description above.\n\n"
     fi
 
     if [[ "$full_logs" == *"ImagePullBackOff"* ]]; then
-        echo -e "❌ ImagePullBackOff found. This occurs when the container image cannot be pulled. Check that the image exists and that the node has access to that image.\n"
+        echo -e "❌ ImagePullBackOff found.\n This occurs when the container image cannot be pulled. Check that the image exists and that the node has access to that image.\n\n"
     fi
     
     if [[ "$full_logs" == *"FailedScheduling"* ]]; then
-        echo -e "❌ FailedScheduling found. Check the 'Events' section of the pod description above.\n"
+        echo -e "❌ FailedScheduling found.\n Check the 'Events' section of the pod description above.\n\n"
     fi
 
     if [[ "$full_logs" == *"FailedCreate"* ]]; then
-        echo -e "❌ FailedCreate found. Check the 'Events' section of the pod description above.\n"
+        echo -e "❌ FailedCreate found.\n Check the 'Events' section of the pod description above.\n\n"
     fi
-    
+
+    shopt -s nocasematch
+    if [[ "$pod_logs" =~ "error" ]]; then
+        echo -e "❌ Error found in pod logs. Check the pod logs above.\n\n"
+    fi
     
 }
 export HELM_EXPERIMENTAL_OCI=1
@@ -71,8 +75,14 @@ eval $helm_template_cmd
 
 helm_upgrade_cmd="helm upgrade --install ${INPUT_RELEASE_NAME} ${INPUT_BASE_CHART} ${INPUT_ADDITIONAL_ARGS} ${INPUT_VALUES_FILE} --set ${INPUT_ADDITIONAL_VALUES} -n ${INPUT_NAMESPACE}"
 echo $helm_upgrade_cmd
-show_problems &
-eval $helm_upgrade_cmd
-kill %1 # kill the show problems so it doesn't hang
+if [[ -n ${INPUT_PROBLEMS_TIMEOUT}]]; then 
+    show_problems &
+    eval $helm_upgrade_cmd
+    
+    # Prevent show_problems from continuing to execute
+    kill %1
+else
+    eval $helm_upgrade_cmd
+fi
 helm status "${INPUT_RELEASE_NAME}" -n "${INPUT_NAMESPACE}"
 echo "✅ Helm upgrade complete"

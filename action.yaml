@@ -3,12 +3,6 @@ author: DevOps
 description: Helm Upgrade
 
 inputs:
-  region:
-    description: AWS Region
-    required: true
-  aws-account-id:
-    description: AWS Account ID
-    required: true
   namespace:
     description: Kubernetes Namespace
     required: true
@@ -29,7 +23,7 @@ inputs:
     required: false
     default: us-east-1
   problems-timeout:
-    description: Number of seconds to wait before checking potential issues (as an integer of seconds)
+    description: Number of seconds to wait before checking potential issues (as an integer of seconds). Adding a value enables problem detection.
     required: false
 
 runs:
@@ -37,8 +31,6 @@ runs:
   steps:
     - id: helm-upgrade-action
       env:
-        INPUT_REGION: ${{ inputs.region }}
-        INPUT_AWS_ACCOUNT_ID: ${{ inputs.aws-account-id }}
         INPUT_NAMESPACE: ${{ inputs.namespace }}
         INPUT_BASE_CHART: ${{ inputs.base-chart }}
         INPUT_VALUES_FILE: ${{ inputs.values-file }}
