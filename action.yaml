@@ -3,12 +3,6 @@ author: DevOps
 description: Helm Upgrade
 
 inputs:
-  region:
-    description: AWS Region
-    required: true
-  aws-account-id:
-    description: AWS Account ID
-    required: true
   namespace:
     description: Kubernetes Namespace
     required: true
@@ -28,20 +22,27 @@ inputs:
     description: Name of Release 
     required: false
     default: us-east-1
+  problems-timeout:
+    description: Number of seconds to wait before checking potential issues (as an integer of seconds). Adding a value enables problem detection.
+    required: false
+  print-template:
+    description: Allowed values are true/false. Determines whether or not to run 'helm template' with the specified values. Defaults to true.
+    required: false
+    default: "true"
 
 runs:
   using: "composite"
   steps:
     - id: helm-upgrade-action
       env:
-        INPUT_REGION: ${{ inputs.region }}
-        INPUT_AWS_ACCOUNT_ID: ${{ inputs.aws-account-id }}
         INPUT_NAMESPACE: ${{ inputs.namespace }}
         INPUT_BASE_CHART: ${{ inputs.base-chart }}
         INPUT_VALUES_FILE: ${{ inputs.values-file }}
         INPUT_ADDITIONAL_VALUES: ${{inputs.additional-values }}
         INPUT_ADDITIONAL_ARGS: ${{inputs.additional-args }}
         INPUT_RELEASE_NAME: ${{ inputs.release-name }}
+        INPUT_PROBLEMS_TIMEOUT: ${{ inputs.problems-timeout }}
+        INPUT_PRINT_TEMPLATE: ${{ inputs.print-template }}
       run: ${{ github.action_path }}/action.sh
       shell: bash
 
