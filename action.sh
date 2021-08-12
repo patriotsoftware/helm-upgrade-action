@@ -23,7 +23,7 @@ show_problems() {
     echo "$pod_descriptions"
 
     echo -e "\nPod Logs: \n"
-    pod_logs="$(echo $pod_names | xargs kubectl logs -n ${INPUT_NAMESPACE})"
+    pod_logs="$(echo $pod_names | xargs kubectl logs -n ${INPUT_NAMESPACE} || echo "Could not access pod logs. Container may not have started.")"
     echo "$pod_logs"
 
 
