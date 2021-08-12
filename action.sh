@@ -7,18 +7,21 @@ show_problems() {
     echo "::group::Helm Status"
     helm status -n ${INPUT_NAMESPACE} ${INPUT_RELEASE_NAME}
     echo "::endgroup::"
-    echo -e "\n \n"
+    echo ""
     
     echo -e "::group::Deployment Description:"
     deploy_description="$(kubectl describe deploy -n ${INPUT_NAMESPACE} ${INPUT_RELEASE_NAME})"
     echo "$deploy_description"
     echo "::endgroup::"
+    echo ""
     
     echo -e "::group::ReplicaSet Description:"
     replicaset_name=$(kubectl describe deployment -n ${INPUT_NAMESPACE} ${INPUT_RELEASE_NAME} | grep "^NewReplicaSet"| awk '{print $2}')
     replicaset_description="$(kubectl describe rs -n ${INPUT_NAMESPACE} $replicaset_name)"
     echo "$replicaset_description"
     echo "::endgroup::"
+    echo ""
+
    
     echo -e "::group::Pod Description:"
     pod_hash_label=$(kubectl get rs -n ${INPUT_NAMESPACE} $replicaset_name -o jsonpath="{.metadata.labels.pod-template-hash}")
@@ -26,22 +29,23 @@ show_problems() {
     pod_descriptions="$(echo $pod_names | xargs kubectl describe pod -n ${INPUT_NAMESPACE})"
     echo "$pod_descriptions"
     echo "::endgroup::"
+    echo ""
 
     echo -e "::group::Pod Logs:"
     pod_logs="$(echo $pod_names | xargs kubectl logs -n ${INPUT_NAMESPACE} || echo "Could not access pod logs. Container may not have started.")"
     echo "$pod_logs"
     echo "::endgroup::"
-
+    echo ""
 
     echo -e "::group::Problem Analysis:"
-    echo -e "\n\nℹ️ Problems timeout seconds exceeded. Beginning analysis. \n\n"
-    echo -e "ℹ️ There are a variety of reasons a deployment could fail. Search the GitHub Action logs for the following headers to jump to a specific section:"
+    echo -e "⏳ Problems timeout seconds exceeded. Beginning analysis.\n"
+    echo -e "ℹ️ There are a variety of reasons a deployment could fail. The following sections can be expanded above for deeper inspection:"
     echo "    Deployment Description"
     echo "    ReplicaSet Description"
     echo "    Pod Description"
     echo "    Pod Logs"
 
-    echo -e "\n\n⏳ Searching common causes for failures. Findings will be shown below. If none are shown, take a look through each of the previous sections.\n"
+    echo -e "\n⏳ Searching common causes for failures. Findings will be shown below. If none are shown, take a look through each of the previous sections.\n"
 
     full_logs=$(echo -e "$deploy_description $replicaset_description $pod_descriptions $pod_logs")
     
