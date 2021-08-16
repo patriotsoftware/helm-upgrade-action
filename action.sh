@@ -31,7 +31,7 @@ show_problems() {
     echo ""
 
     echo -e "::group::Pod Logs:"
-    pod_logs="$(echo $pod_names | xargs kubectl logs -n ${INPUT_NAMESPACE} || echo "Could not access pod logs. Container may not have started.")"
+    pod_logs="$(echo $pod_names | xargs kubectl logs -n ${INPUT_NAMESPACE} || echo $pod_names | xargs kubectl logs -n ${INPUT_NAMESPACE} --previous || echo "Could not access pod logs. Container may not have started.")"
     echo "$pod_logs"
     echo "::endgroup::"
     echo ""
