@@ -1,5 +1,5 @@
 name: Test helm-upload-test-action
-on: 
+on:
   push:
     branches:
       - "*"
@@ -9,10 +9,10 @@ on:
 jobs:
   test-action:
     name: Test helm-upgrade-action
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install Kind
         run: |
@@ -23,7 +23,7 @@ jobs:
 
       - name: Pull Down Public Helm
         id: pull-down-public-helm
-        run: | 
+        run: |
           helm create testchart
 
       - name: Run helm-upgrade-action
@@ -43,10 +43,10 @@ jobs:
           release-name: crazy-test
           namespace: default
           base-chart-name: testchart # Remove appended ./
-        run: | 
+        run: |
           chartname="${{ env.release-name }}-${{ env.base-chart-name }}"
           podname=$(kubectl get pods -o jsonpath="{.items[*]['metadata.name']}")
-          
+
           if [[ "$podname"  != "$chartname"* ]]; then
               echo "❌ Pod name is unexpected. Install Failed."
               exit 1
